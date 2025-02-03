@@ -1,0 +1,7 @@
+numpy
+torch
+opencv-python
+ultralytics
+torchreid
+gdown
+tensorboard

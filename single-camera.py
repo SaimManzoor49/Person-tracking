@@ -15,11 +15,11 @@ class PersonReID:
                  yolo_model='./models/yolov8n.pt', 
                  reid_model='osnet_ibn_x1_0', 
                  device='cuda',
-                 waiting_frames=3,
-                 max_features_per_id=90,
-                 min_bbox_size=90,
+                 waiting_frames=13, # 3
+                 max_features_per_id=100,
+                 min_bbox_size=100,
                  iou_threshold=0.98,
-                 feature_match_threshold=0.76,
+                 feature_match_threshold=0.75,
                  max_frames_missing=40,
                  detection_confidence=0.4):
         
@@ -43,7 +43,7 @@ class PersonReID:
         self.FEATURE_MATCH_THRESHOLD = feature_match_threshold
         self.MAX_FRAMES_MISSING = max_frames_missing
         self.DETECTION_CONFIDENCE = detection_confidence
-        self.CLUSTER_THRESHOLD = 0.85  # Similarity threshold for clustering
+        self.CLUSTER_THRESHOLD = 0.79  # Similarity threshold for clustering
         self.MAX_CLUSTERS_PER_ID = 5    # Max clusters per ID
         self.PRUNE_INTERVAL = 1000      # Prune database every N frames
         self.MAX_INACTIVE_FRAMES = 5000 # Remove IDs inactive for this many frames
@@ -462,7 +462,7 @@ def main():
         device='cuda' if torch.cuda.is_available() else 'cpu'
     )
 
-    cap = cv2.VideoCapture(1)  # Use webcam
+    cap = cv2.VideoCapture('./videos/test-video-2.mp4')  # Use webcam
     frame_id = 0
     
     while True:
@@ -482,7 +482,7 @@ def main():
             cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
             cv2.putText(frame, label, (x1, y1-10),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2)
-
+        
         cv2.imshow('Person Re-ID', frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
